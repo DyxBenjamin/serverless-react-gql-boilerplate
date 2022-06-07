@@ -5,7 +5,6 @@ export const me = async (parent, arg, context) => {
   	if (!user) {
 		throw new Error("You must be logged in to do that!");
   	}
-	console.log("user", user);
 	return await data.get( `users:${user.username}` );
 };
 

@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ApolloClient, HttpLink, gql, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient( {
-	cache: new InMemoryCache(), link: new HttpLink( {
-		uri: "https://super-deploy-iuxxj.cloud.serverless.com/graphql"
+	cache: new InMemoryCache(),
+	link: new HttpLink( {
+		uri: "https://super-deploy-iuxxj.cloud.serverless.com/graphql",
 	} ),
 } );
 

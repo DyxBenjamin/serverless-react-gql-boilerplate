@@ -16,7 +16,7 @@
     "web-vitals": "^1.0.1"
   },
   "serverless": {
-    "app": "",
+    "app": "trading-bot-js",
     "org": "dyxbenjamin"
   },
   "scripts": {

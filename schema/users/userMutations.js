@@ -4,12 +4,24 @@ import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
 
 export const createUser = async ( parent, args ) => {
+	const validateUsername = await data.get( `users:${ args.username }` );
+	if ( validateUsername ) {
+		throw new Error( "Username already exists" );
+	}
+	
+	if ( !args.username || !args.password ) {
+		throw new Error( "Username and password are required" );
+	}
+	
 	const id = uuid();
+	
 	const password = args.password;
-	const cryptoPass = await bcrypt.hash( password, 10 );
+	const hashedPassword = await bcrypt.hash( password, 10 );
+	
 	await data.set( `users:${ args.username }`, {
-		id, username: args.username, email: args.email, password: cryptoPass,
+		id, username: args.username, email: args.email, password: hashedPassword,
 	} );
+	
 	return data.get( `users:${ args.username }` );
 }
 
@@ -34,11 +46,11 @@ export const loginUser = async ( parent, args ) => {
 	}
 	const user = await data.get( `users:${ username }` );
 	if ( !user ) {
-		throw new Error( 'User not found' );
+		throw new Error( 'Wrong credentials' );
 	}
 	const isCorrectPassword = bcrypt.compareSync( password, user.password );
 	if ( !isCorrectPassword ) {
-		throw new Error( 'Incorrect password' );
+		throw new Error( 'Wrong credentials' );
 	}
 	const token = jwt.sign( { id: user.id, username: user.username }, params.JWT_SECRET );
 	return { token };
